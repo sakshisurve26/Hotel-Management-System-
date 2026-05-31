@@ -1,0 +1,2670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Taj Residency — Hotel Management System</title>
+  <style>
+/* ╔══════════════════════════════════════════════════╗
+   ║   style.css — Taj Residency Hotel Management     ║
+   ║   Aesthetic: Refined luxury · Dark sidebar       ║
+   ╚══════════════════════════════════════════════════╝ */
+
+/* ─── FONTS ─── */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+/* ─── RESET & ROOT ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --sidebar-w: 240px;
+  --bg:        #f5f4f0;
+  --surface:   #ffffff;
+  --surface-2: #faf9f6;
+  --border:    #e8e4dc;
+  --text-1:    #1a1714;
+  --text-2:    #6b6560;
+  --text-3:    #a09a93;
+
+  --gold:      #b5862b;
+  --gold-lt:   #f5eed8;
+  --blue:      #1a4f8a;
+  --blue-lt:   #dce9f7;
+  --green:     #1d6b44;
+  --green-lt:  #d4f0e2;
+  --orange:    #b55a1a;
+  --orange-lt: #fdecd8;
+  --red:       #b51a1a;
+  --red-lt:    #fdd8d8;
+  --purple:    #5a1a8a;
+  --purple-lt: #ead8f7;
+  --teal:      #1a7a7a;
+  --teal-lt:   #d8f2f2;
+
+  --sidebar-bg:   #111009;
+  --sidebar-text: #c8c2b8;
+  --sidebar-act:  #b5862b;
+
+  --radius:    10px;
+  --radius-sm: 6px;
+  --shadow:    0 2px 12px rgba(0,0,0,.07);
+  --shadow-md: 0 4px 24px rgba(0,0,0,.11);
+
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body:    'DM Sans', system-ui, sans-serif;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text-1);
+  display: flex;
+  min-height: 100vh;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ════════════════════════════════════
+   SIDEBAR
+════════════════════════════════════ */
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--sidebar-bg);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  left: 0; top: 0; bottom: 0;
+  z-index: 100;
+  border-right: 1px solid rgba(255,255,255,.04);
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 24px 20px;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+
+.brand-icon {
+  font-size: 22px;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.brand-name {
+  display: block;
+  font-family: var(--font-display);
+  color: #f0ece4;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: .3px;
+}
+
+.brand-sub {
+  display: block;
+  font-size: 10px;
+  color: var(--sidebar-text);
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  margin-top: 1px;
+}
+
+.sidebar-nav {
+  flex: 1;
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  overflow-y: auto;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: transparent;
+  color: var(--sidebar-text);
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  font-weight: 400;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  transition: all .18s ease;
+}
+
+.nav-item:hover { background: rgba(255,255,255,.06); color: #f0ece4; }
+.nav-item.active { background: rgba(181,134,43,.15); color: var(--gold); font-weight: 500; }
+.nav-icon { font-size: 16px; width: 20px; text-align: center; }
+
+.sidebar-footer {
+  padding: 16px 20px;
+  border-top: 1px solid rgba(255,255,255,.06);
+}
+
+.hotel-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11.5px;
+  color: var(--sidebar-text);
+}
+
+.status-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #27ae60;
+  box-shadow: 0 0 6px #27ae60;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .5; }
+}
+
+/* ════════════════════════════════════
+   MAIN CONTENT
+════════════════════════════════════ */
+.main-content {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ─── TOPBAR ─── */
+.topbar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.page-title {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-1);
+}
+
+.page-sub {
+  font-size: 12px;
+  color: var(--text-3);
+  margin-top: 1px;
+}
+
+.topbar-right { display: flex; align-items: center; gap: 20px; }
+
+.topbar-date {
+  font-size: 12.5px;
+  color: var(--text-2);
+  font-weight: 400;
+}
+
+.topbar-admin {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-1);
+}
+
+.admin-avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--gold);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* ─── SECTIONS ─── */
+.section { display: none; padding: 28px; animation: fadeUp .25s ease; }
+.section.active { display: block; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ════════════════════════════════════
+   DASHBOARD
+════════════════════════════════════ */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  transition: transform .15s;
+}
+.stat-card:hover { transform: translateY(-2px); }
+
+.stat-icon { font-size: 22px; opacity: .8; }
+.stat-value { font-size: 24px; font-weight: 700; line-height: 1; }
+.stat-label { font-size: 11.5px; color: var(--text-2); margin-top: 3px; }
+
+.stat-blue   { border-left: 4px solid var(--blue);   } .stat-blue   .stat-value { color: var(--blue);   }
+.stat-green  { border-left: 4px solid var(--green);  } .stat-green  .stat-value { color: var(--green);  }
+.stat-orange { border-left: 4px solid var(--orange); } .stat-orange .stat-value { color: var(--orange); }
+.stat-purple { border-left: 4px solid var(--purple); } .stat-purple .stat-value { color: var(--purple); }
+.stat-teal   { border-left: 4px solid var(--teal);   } .stat-teal   .stat-value { color: var(--teal);   }
+.stat-gold   { border-left: 4px solid var(--gold);   } .stat-gold   .stat-value { color: var(--gold);   }
+
+.dash-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.full-width { grid-column: 1 / -1; }
+
+.quick-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 4px;
+}
+
+.qa-btn {
+  background: var(--sidebar-bg);
+  color: #f0ece4;
+  border: none;
+  padding: 10px 18px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 13px;
+  cursor: pointer;
+  transition: background .15s;
+}
+.qa-btn:hover { background: var(--blue); }
+
+/* Occupancy bars */
+.occ-row { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.occ-label { width: 110px; font-size: 13px; color: var(--text-2); }
+.occ-bar-wrap { flex: 1; height: 8px; background: var(--border); border-radius: 99px; overflow: hidden; }
+.occ-bar { height: 100%; background: var(--gold); border-radius: 99px; transition: width .4s ease; }
+.occ-pct { width: 50px; font-size: 12px; color: var(--text-2); text-align: right; }
+
+/* ════════════════════════════════════
+   CARDS
+════════════════════════════════════ */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-2);
+}
+.card-header h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-1);
+}
+
+.form-body { padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+.mt-2 { margin-top: 20px; }
+
+/* ════════════════════════════════════
+   ROOMS GRID
+════════════════════════════════════ */
+.rooms-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 16px;
+}
+
+.room-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  box-shadow: var(--shadow);
+  transition: transform .15s;
+}
+.room-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+
+.room-available   { border-top: 3px solid var(--green); }
+.room-occupied    { border-top: 3px solid var(--orange); }
+.room-maintenance { border-top: 3px solid var(--red); }
+
+.room-card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.room-number { font-weight: 700; font-size: 16px; }
+.room-type { font-size: 12px; color: var(--text-2); margin-bottom: 10px; }
+
+.room-info-row {
+  display: flex;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--text-2);
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.room-price { font-size: 13px; font-weight: 600; color: var(--text-1); margin-left: auto; }
+
+.room-amenities { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 14px; }
+.amenity-chip {
+  font-size: 10.5px;
+  background: var(--bg);
+  color: var(--text-2);
+  padding: 2px 7px;
+  border-radius: 99px;
+  border: 1px solid var(--border);
+}
+
+.room-actions { display: flex; gap: 8px; }
+
+/* ════════════════════════════════════
+   TABLES
+════════════════════════════════════ */
+.table-wrap { overflow-x: auto; }
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+.data-table thead tr {
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--border);
+}
+.data-table th {
+  padding: 11px 14px;
+  text-align: left;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-2);
+  letter-spacing: .4px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.data-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+.data-table tbody tr:hover { background: var(--surface-2); }
+.data-table tbody tr:last-child td { border-bottom: none; }
+
+.action-cell { display: flex; gap: 6px; align-items: center; }
+.empty-td { text-align: center; color: var(--text-3); padding: 28px; }
+
+/* ════════════════════════════════════
+   STAFF GRID
+════════════════════════════════════ */
+.staff-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 16px;
+}
+
+.staff-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px 18px;
+  text-align: center;
+  box-shadow: var(--shadow);
+}
+
+.staff-avatar {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 auto 12px;
+}
+
+.staff-name { font-weight: 600; font-size: 15px; }
+.staff-role {
+  font-size: 12px;
+  color: var(--text-2);
+  margin-bottom: 12px;
+}
+
+.staff-details {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--text-2);
+  text-align: left;
+  margin-bottom: 12px;
+}
+
+.staff-actions { margin-top: 12px; }
+
+/* ════════════════════════════════════
+   BADGES
+════════════════════════════════════ */
+.badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 99px;
+  letter-spacing: .2px;
+}
+.badge-green  { background: var(--green-lt);  color: var(--green);  }
+.badge-orange { background: var(--orange-lt); color: var(--orange); }
+.badge-red    { background: var(--red-lt);    color: var(--red);    }
+.badge-blue   { background: var(--blue-lt);   color: var(--blue);   }
+.badge-gray   { background: #efefef;          color: #777;          }
+
+/* ════════════════════════════════════
+   BUTTONS
+════════════════════════════════════ */
+.btn-primary {
+  background: var(--sidebar-bg);
+  color: #f0ece4;
+  border: none;
+  padding: 10px 20px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background .15s;
+}
+.btn-primary:hover { background: #2d2a24; }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-2);
+  border: 1px solid var(--border);
+  padding: 10px 20px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  cursor: pointer;
+  transition: all .15s;
+}
+.btn-ghost:hover { background: var(--bg); }
+
+.btn-danger {
+  background: var(--red);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  cursor: pointer;
+}
+
+.btn-sm {
+  background: var(--sidebar-bg);
+  color: #f0ece4;
+  border: none;
+  padding: 5px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition: background .15s;
+  white-space: nowrap;
+}
+.btn-sm:hover { background: var(--blue); }
+
+.btn-outline {
+  background: transparent;
+  color: var(--text-1);
+  border: 1px solid var(--border);
+}
+.btn-outline:hover { background: var(--bg); color: var(--text-1); }
+
+.btn-danger-outline {
+  color: var(--red) !important;
+  border-color: var(--red-lt) !important;
+}
+.btn-danger-outline:hover { background: var(--red-lt) !important; }
+
+.full-btn { width: 100%; text-align: center; padding: 12px; }
+
+/* ════════════════════════════════════
+   FORMS
+════════════════════════════════════ */
+.form-group { display: flex; flex-direction: column; gap: 5px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-2);
+  letter-spacing: .2px;
+}
+
+input[type=text], input[type=number], input[type=email],
+input[type=tel], input[type=date], select, textarea {
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  color: var(--text-1);
+  background: var(--surface);
+  transition: border-color .15s;
+  outline: none;
+  width: 100%;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(181,134,43,.1);
+}
+
+textarea { resize: vertical; }
+
+.search-input {
+  padding: 9px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 13.5px;
+  width: 240px;
+  background: var(--surface);
+  outline: none;
+}
+.search-input:focus { border-color: var(--gold); }
+
+/* ════════════════════════════════════
+   TOOLBAR
+════════════════════════════════════ */
+.section-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.filter-group { display: flex; gap: 10px; }
+.filter-group select { width: auto; }
+
+/* ════════════════════════════════════
+   CHECK-IN / OUT
+════════════════════════════════════ */
+.checkin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 0; }
+
+.preview-box {
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  margin-top: 4px;
+  border: 1px solid var(--border);
+}
+
+.preview-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  padding: 5px 0;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-2);
+}
+.preview-row:last-child { border-bottom: none; }
+.preview-row strong { color: var(--text-1); }
+.total-row { font-weight: 700; color: var(--text-1) !important; }
+
+/* ════════════════════════════════════
+   BILLING
+════════════════════════════════════ */
+.billing-layout {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.billing-selector { }
+
+.service-add-row { display: flex; gap: 8px; align-items: center; }
+.service-add-row select { flex: 1; }
+
+.services-list { display: flex; flex-direction: column; gap: 6px; }
+
+.bill-svc-chip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+  padding: 7px 10px;
+  font-size: 13px;
+  border: 1px solid var(--border);
+}
+.bill-svc-chip button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--red);
+  font-size: 14px;
+  padding: 0 2px;
+}
+
+.bill-preview {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  min-height: 400px;
+  box-shadow: var(--shadow);
+}
+
+.bill-placeholder {
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--text-3);
+}
+
+.bill-icon { font-size: 40px; opacity: .3; }
+
+/* Invoice Preview */
+.invoice-preview {
+  padding: 28px;
+}
+
+.invoice-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.invoice-logo {
+  font-family: var(--font-display);
+  font-size: 20px;
+  color: var(--gold);
+}
+
+.invoice-meta {
+  text-align: right;
+  font-size: 13px;
+  color: var(--text-2);
+  line-height: 1.7;
+}
+
+.invoice-guest {
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.invoice-period {
+  font-size: 12px;
+  color: var(--text-2);
+  margin-bottom: 14px;
+  background: var(--gold-lt);
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+}
+
+.invoice-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 16px 0;
+}
+
+.invoice-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+.invoice-table th {
+  background: var(--bg);
+  padding: 9px 12px;
+  text-align: left;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .4px;
+  color: var(--text-2);
+  font-weight: 600;
+}
+.invoice-table td {
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+.invoice-table td:last-child,
+.invoice-table th:last-child { text-align: right; }
+
+.subtotal-row td { color: var(--text-2); font-size: 12px; }
+.total-row { background: var(--sidebar-bg); }
+.total-row td { color: #f0ece4 !important; font-size: 14px; }
+
+.invoice-footer {
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-3);
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  line-height: 1.7;
+}
+
+/* ════════════════════════════════════
+   BOOKING COST PREVIEW
+════════════════════════════════════ */
+.cost-preview-box {
+  background: var(--gold-lt);
+  border: 1px solid rgba(181,134,43,.25);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  margin-top: 2px;
+}
+
+.cp-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  padding: 4px 0;
+  color: var(--text-2);
+}
+
+.cp-total {
+  border-top: 1px solid rgba(181,134,43,.3);
+  margin-top: 6px;
+  padding-top: 8px;
+  font-weight: 600;
+  color: var(--text-1) !important;
+}
+
+.cost-warning { color: var(--red); font-size: 12.5px; }
+
+.booking-cost-preview { margin-top: 2px; }
+
+/* ════════════════════════════════════
+   MODALS
+════════════════════════════════════ */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(17,16,9,.6);
+  backdrop-filter: blur(3px);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-overlay.active { display: flex; }
+
+.modal {
+  background: var(--surface);
+  border-radius: var(--radius);
+  width: 100%;
+  max-width: 520px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.25);
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  animation: modalIn .2s ease;
+}
+
+.modal-wide { max-width: 680px; }
+
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(.95) translateY(10px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-2);
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+
+.modal-header h2 {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: var(--text-2);
+  line-height: 1;
+  padding: 2px;
+}
+.modal-close:hover { color: var(--text-1); }
+
+.modal-body {
+  padding: 22px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.modal-footer {
+  padding: 16px 22px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* ════════════════════════════════════
+   MISC COMPONENTS
+════════════════════════════════════ */
+.customer-name-cell {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.mini-avatar {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.id-chip {
+  display: inline-block;
+  font-size: 10.5px;
+  background: var(--blue-lt);
+  color: var(--blue);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-weight: 600;
+  margin-right: 3px;
+}
+
+.category-chip {
+  display: inline-block;
+  font-size: 11px;
+  background: var(--surface-2);
+  color: var(--text-2);
+  padding: 2px 8px;
+  border-radius: 99px;
+  border: 1px solid var(--border);
+}
+
+.empty-state {
+  text-align: center;
+  color: var(--text-3);
+  padding: 40px;
+  font-size: 14px;
+  grid-column: 1 / -1;
+}
+
+.mini-table { padding: 0; }
+
+/* ════════════════════════════════════
+   TOAST
+════════════════════════════════════ */
+.toast {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  padding: 12px 20px;
+  border-radius: var(--radius-sm);
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(0,0,0,.2);
+  z-index: 9999;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all .25s ease;
+  pointer-events: none;
+  max-width: 340px;
+}
+.toast.show { opacity: 1; transform: translateY(0); }
+.toast-success { background: #1a4a2e; }
+.toast-error   { background: #4a1a1a; }
+
+/* ════════════════════════════════════
+   CHECK-IN SECTION RESPONSIVE
+════════════════════════════════════ */
+.booking-preview { margin-top: 4px; }
+
+/* ════════════════════════════════════
+   PRINT STYLES
+════════════════════════════════════ */
+@media print {
+  .sidebar, .topbar, .section-toolbar,
+  .modal-footer, .modal-close { display: none !important; }
+  .main-content { margin-left: 0; }
+  .print-invoice { padding: 20px; }
+  body { background: white; }
+}
+
+/* ════════════════════════════════════
+   RESPONSIVE
+════════════════════════════════════ */
+@media (max-width: 900px) {
+  .sidebar { width: 60px; }
+  .sidebar .brand-text, .sidebar .nav-item span:last-child,
+  .sidebar .sidebar-footer span { display: none; }
+  .sidebar .nav-item { justify-content: center; padding: 12px; }
+  .main-content { margin-left: 60px; }
+  .dash-grid { grid-template-columns: 1fr; }
+  .checkin-grid { grid-template-columns: 1fr; }
+  .billing-layout { grid-template-columns: 1fr; }
+  .form-row { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 600px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .rooms-grid { grid-template-columns: 1fr; }
+  .staff-grid { grid-template-columns: repeat(2, 1fr); }
+  .topbar { padding: 12px 16px; }
+  .section { padding: 16px; }
+}
+
+</style>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════
+     SIDEBAR NAVIGATION
+════════════════════════════════════════ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-icon">⬡</div>
+    <div class="brand-text">
+      <span class="brand-name">Taj Residency</span>
+      <span class="brand-sub">Management Suite</span>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <button class="nav-item active" onclick="showSection('dashboard')">
+      <span class="nav-icon">▦</span><span>Dashboard</span>
+    </button>
+    <button class="nav-item" onclick="showSection('rooms')">
+      <span class="nav-icon">⬚</span><span>Rooms</span>
+    </button>
+    <button class="nav-item" onclick="showSection('bookings')">
+      <span class="nav-icon">◈</span><span>Bookings</span>
+    </button>
+    <button class="nav-item" onclick="showSection('checkin')">
+      <span class="nav-icon">◎</span><span>Check-In / Out</span>
+    </button>
+    <button class="nav-item" onclick="showSection('billing')">
+      <span class="nav-icon">◉</span><span>Billing</span>
+    </button>
+    <button class="nav-item" onclick="showSection('customers')">
+      <span class="nav-icon">◐</span><span>Customers</span>
+    </button>
+    <button class="nav-item" onclick="showSection('staff')">
+      <span class="nav-icon">◑</span><span>Staff</span>
+    </button>
+    <button class="nav-item" onclick="showSection('services')">
+      <span class="nav-icon">◒</span><span>Services</span>
+    </button>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="hotel-status">
+      <span class="status-dot"></span>
+      <span>System Online</span>
+    </div>
+  </div>
+</aside>
+
+<!-- ═══════════════════════════════════════
+     MAIN CONTENT
+════════════════════════════════════════ -->
+<main class="main-content">
+
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <h1 class="page-title" id="pageTitle">Dashboard</h1>
+      <p class="page-sub" id="pageSub">Overview & real-time statistics</p>
+    </div>
+    <div class="topbar-right">
+      <div class="topbar-date" id="topbarDate"></div>
+      <div class="topbar-admin">
+        <div class="admin-avatar">AM</div>
+        <span>Admin</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ─── DASHBOARD ─── -->
+  <section class="section active" id="section-dashboard">
+    <div class="stats-grid" id="statsGrid"></div>
+    <div class="dash-grid">
+      <div class="card">
+        <div class="card-header"><h3>Room Occupancy</h3></div>
+        <div class="occupancy-bars" id="occupancyBars"></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><h3>Recent Bookings</h3></div>
+        <div class="mini-table" id="recentBookings"></div>
+      </div>
+      <div class="card full-width">
+        <div class="card-header"><h3>Quick Actions</h3></div>
+        <div class="quick-actions">
+          <button class="qa-btn" onclick="showSection('bookings'); setTimeout(()=>document.getElementById('addBookingBtn').click(),200)">＋ New Booking</button>
+          <button class="qa-btn" onclick="showSection('rooms'); setTimeout(()=>document.getElementById('addRoomBtn').click(),200)">＋ Add Room</button>
+          <button class="qa-btn" onclick="showSection('customers'); setTimeout(()=>document.getElementById('addCustomerBtn').click(),200)">＋ Add Customer</button>
+          <button class="qa-btn" onclick="showSection('checkin')">Check-In Guest</button>
+          <button class="qa-btn" onclick="showSection('billing')">Generate Bill</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── ROOMS ─── -->
+  <section class="section" id="section-rooms">
+    <div class="section-toolbar">
+      <button class="btn-primary" id="addRoomBtn" onclick="openModal('roomModal')">＋ Add Room</button>
+      <div class="filter-group">
+        <select id="roomStatusFilter" onchange="renderRooms()">
+          <option value="">All Status</option>
+          <option value="Available">Available</option>
+          <option value="Occupied">Occupied</option>
+          <option value="Maintenance">Maintenance</option>
+        </select>
+        <select id="roomTypeFilter" onchange="renderRooms()">
+          <option value="">All Types</option>
+          <option value="Standard">Standard</option>
+          <option value="Deluxe">Deluxe</option>
+          <option value="Suite">Suite</option>
+          <option value="Presidential">Presidential</option>
+        </select>
+      </div>
+    </div>
+    <div class="rooms-grid" id="roomsGrid"></div>
+  </section>
+
+  <!-- ─── BOOKINGS ─── -->
+  <section class="section" id="section-bookings">
+    <div class="section-toolbar">
+      <button class="btn-primary" id="addBookingBtn" onclick="openModal('bookingModal')">＋ New Booking</button>
+      <div class="filter-group">
+        <select id="bookingStatusFilter" onchange="renderBookings()">
+          <option value="">All Status</option>
+          <option value="Confirmed">Confirmed</option>
+          <option value="Checked-In">Checked-In</option>
+          <option value="Checked-Out">Checked-Out</option>
+          <option value="Cancelled">Cancelled</option>
+        </select>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table class="data-table" id="bookingsTable">
+        <thead>
+          <tr><th>ID</th><th>Customer</th><th>Room</th><th>Check-In</th><th>Check-Out</th><th>Status</th><th>Amount</th><th>Actions</th></tr>
+        </thead>
+        <tbody id="bookingsTbody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ─── CHECK-IN / OUT ─── -->
+  <section class="section" id="section-checkin">
+    <div class="checkin-grid">
+      <div class="card">
+        <div class="card-header"><h3>◎ Check-In Guest</h3></div>
+        <div class="form-body">
+          <div class="form-group">
+            <label>Select Confirmed Booking</label>
+            <select id="checkinBookingSelect">
+              <option value="">— Choose Booking —</option>
+            </select>
+          </div>
+          <div class="booking-preview" id="checkinPreview"></div>
+          <button class="btn-primary full-btn" onclick="doCheckIn()">Confirm Check-In</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><h3>◉ Check-Out Guest</h3></div>
+        <div class="form-body">
+          <div class="form-group">
+            <label>Select Checked-In Booking</label>
+            <select id="checkoutBookingSelect">
+              <option value="">— Choose Booking —</option>
+            </select>
+          </div>
+          <div class="booking-preview" id="checkoutPreview"></div>
+          <button class="btn-danger full-btn" onclick="doCheckOut()">Process Check-Out</button>
+        </div>
+      </div>
+    </div>
+    <div class="card mt-2">
+      <div class="card-header"><h3>Currently Checked-In</h3></div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>Booking ID</th><th>Guest</th><th>Room</th><th>Check-In</th><th>Nights</th></tr></thead>
+          <tbody id="checkedInList"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── BILLING ─── -->
+  <section class="section" id="section-billing">
+    <div class="billing-layout">
+      <div class="card billing-selector">
+        <div class="card-header"><h3>Generate Invoice</h3></div>
+        <div class="form-body">
+          <div class="form-group">
+            <label>Select Booking</label>
+            <select id="billingBookingSelect" onchange="loadBillingPreview()">
+              <option value="">— Choose Booking —</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Add Service</label>
+            <div class="service-add-row">
+              <select id="billingServiceSelect">
+                <option value="">— Select Service —</option>
+              </select>
+              <button class="btn-sm" onclick="addServiceToBill()">Add</button>
+            </div>
+          </div>
+          <div id="billingServicesList" class="services-list"></div>
+          <button class="btn-primary full-btn" onclick="generateBill()">Generate Invoice</button>
+        </div>
+      </div>
+      <div class="bill-preview" id="billPreview">
+        <div class="bill-placeholder">
+          <div class="bill-icon">◉</div>
+          <p>Select a booking to preview invoice</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CUSTOMERS ─── -->
+  <section class="section" id="section-customers">
+    <div class="section-toolbar">
+      <button class="btn-primary" id="addCustomerBtn" onclick="openModal('customerModal')">＋ Add Customer</button>
+      <input class="search-input" placeholder="Search customers…" oninput="renderCustomers(this.value)" />
+    </div>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead><tr><th>ID</th><th>Name</th><th>Phone</th><th>Email</th><th>ID Proof</th><th>Total Stays</th><th>Actions</th></tr></thead>
+        <tbody id="customersTbody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ─── STAFF ─── -->
+  <section class="section" id="section-staff">
+    <div class="section-toolbar">
+      <button class="btn-primary" onclick="openModal('staffModal')">＋ Add Staff</button>
+    </div>
+    <div class="staff-grid" id="staffGrid"></div>
+  </section>
+
+  <!-- ─── SERVICES ─── -->
+  <section class="section" id="section-services">
+    <div class="section-toolbar">
+      <button class="btn-primary" onclick="openModal('serviceModal')">＋ Add Service</button>
+    </div>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead><tr><th>ID</th><th>Service Name</th><th>Category</th><th>Price (₹)</th><th>Available</th><th>Actions</th></tr></thead>
+        <tbody id="servicesTbody"></tbody>
+      </table>
+    </div>
+  </section>
+
+</main>
+
+<!-- ═══════════════════════════════════════
+     MODALS
+════════════════════════════════════════ -->
+
+<!-- Room Modal -->
+<div class="modal-overlay" id="roomModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="roomModalTitle">Add New Room</h2>
+      <button class="modal-close" onclick="closeModal('roomModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="roomEditId" />
+      <div class="form-row">
+        <div class="form-group">
+          <label>Room Number *</label>
+          <input type="text" id="roomNumber" placeholder="e.g. 101" />
+        </div>
+        <div class="form-group">
+          <label>Floor</label>
+          <input type="number" id="roomFloor" placeholder="1" min="1" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Type *</label>
+          <select id="roomType">
+            <option>Standard</option><option>Deluxe</option><option>Suite</option><option>Presidential</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Price per Night (₹) *</label>
+          <input type="number" id="roomPrice" placeholder="2500" min="0" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Capacity</label>
+          <input type="number" id="roomCapacity" placeholder="2" min="1" />
+        </div>
+        <div class="form-group">
+          <label>Status</label>
+          <select id="roomStatus">
+            <option>Available</option><option>Occupied</option><option>Maintenance</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Amenities (comma separated)</label>
+        <input type="text" id="roomAmenities" placeholder="AC, TV, WiFi, Mini-Bar" />
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" onclick="closeModal('roomModal')">Cancel</button>
+      <button class="btn-primary" onclick="saveRoom()">Save Room</button>
+    </div>
+  </div>
+</div>
+
+<!-- Booking Modal -->
+<div class="modal-overlay" id="bookingModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>New Booking</h2>
+      <button class="modal-close" onclick="closeModal('bookingModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Customer *</label>
+          <select id="bookingCustomer"></select>
+        </div>
+        <div class="form-group">
+          <label>Room *</label>
+          <select id="bookingRoom"></select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Check-In Date *</label>
+          <input type="date" id="bookingCheckIn" />
+        </div>
+        <div class="form-group">
+          <label>Check-Out Date *</label>
+          <input type="date" id="bookingCheckOut" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Special Requests</label>
+        <textarea id="bookingNotes" rows="2" placeholder="Any special requirements…"></textarea>
+      </div>
+      <div class="booking-cost-preview" id="bookingCostPreview"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" onclick="closeModal('bookingModal')">Cancel</button>
+      <button class="btn-primary" onclick="saveBooking()">Confirm Booking</button>
+    </div>
+  </div>
+</div>
+
+<!-- Customer Modal -->
+<div class="modal-overlay" id="customerModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="customerModalTitle">Add Customer</h2>
+      <button class="modal-close" onclick="closeModal('customerModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="customerEditId" />
+      <div class="form-row">
+        <div class="form-group">
+          <label>Full Name *</label>
+          <input type="text" id="customerName" placeholder="Aarav Sharma" />
+        </div>
+        <div class="form-group">
+          <label>Phone *</label>
+          <input type="tel" id="customerPhone" placeholder="98XXXXXXXX" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="customerEmail" placeholder="name@email.com" />
+        </div>
+        <div class="form-group">
+          <label>ID Proof Type</label>
+          <select id="customerIdType">
+            <option>Aadhaar</option><option>PAN</option><option>Passport</option><option>Voter ID</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>ID Number</label>
+          <input type="text" id="customerIdNumber" placeholder="XXXX-XXXX-XXXX" />
+        </div>
+        <div class="form-group">
+          <label>City</label>
+          <input type="text" id="customerCity" placeholder="Mumbai" />
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" onclick="closeModal('customerModal')">Cancel</button>
+      <button class="btn-primary" onclick="saveCustomer()">Save Customer</button>
+    </div>
+  </div>
+</div>
+
+<!-- Staff Modal -->
+<div class="modal-overlay" id="staffModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Add Staff Member</h2>
+      <button class="modal-close" onclick="closeModal('staffModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Full Name *</label>
+          <input type="text" id="staffName" placeholder="Vikram Nair" />
+        </div>
+        <div class="form-group">
+          <label>Role *</label>
+          <select id="staffRole">
+            <option>Receptionist</option><option>Housekeeping</option><option>Chef</option>
+            <option>Security</option><option>Manager</option><option>Maintenance</option><option>Concierge</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Phone</label>
+          <input type="tel" id="staffPhone" placeholder="98XXXXXXXX" />
+        </div>
+        <div class="form-group">
+          <label>Salary (₹/month)</label>
+          <input type="number" id="staffSalary" placeholder="25000" min="0" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Shift</label>
+          <select id="staffShift">
+            <option>Morning</option><option>Evening</option><option>Night</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Join Date</label>
+          <input type="date" id="staffJoinDate" />
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" onclick="closeModal('staffModal')">Cancel</button>
+      <button class="btn-primary" onclick="saveStaff()">Save Staff</button>
+    </div>
+  </div>
+</div>
+
+<!-- Service Modal -->
+<div class="modal-overlay" id="serviceModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Add Service</h2>
+      <button class="modal-close" onclick="closeModal('serviceModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Service Name *</label>
+          <input type="text" id="serviceName" placeholder="Room Service" />
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <select id="serviceCategory">
+            <option>Food & Beverage</option><option>Spa & Wellness</option><option>Laundry</option>
+            <option>Transport</option><option>Entertainment</option><option>Miscellaneous</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Price (₹) *</label>
+          <input type="number" id="servicePrice" placeholder="500" min="0" />
+        </div>
+        <div class="form-group">
+          <label>Available</label>
+          <select id="serviceAvailable">
+            <option value="true">Yes</option><option value="false">No</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <textarea id="serviceDesc" rows="2" placeholder="Brief description…"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" onclick="closeModal('serviceModal')">Cancel</button>
+      <button class="btn-primary" onclick="saveService()">Save Service</button>
+    </div>
+  </div>
+</div>
+
+<!-- Bill Print Modal -->
+<div class="modal-overlay" id="billPrintModal">
+  <div class="modal modal-wide">
+    <div class="modal-header">
+      <h2>Invoice / Bill</h2>
+      <button class="modal-close" onclick="closeModal('billPrintModal')">✕</button>
+    </div>
+    <div class="modal-body" id="billPrintContent"></div>
+    <div class="modal-footer">
+      <button class="btn-ghost" onclick="closeModal('billPrintModal')">Close</button>
+      <button class="btn-primary" onclick="window.print()">🖨 Print</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- Scripts -->
+<script>
+/**
+ * ╔══════════════════════════════════════════════════╗
+ * ║   db.js — In-Memory Database for Taj Residency   ║
+ * ║   All monetary values in INR (₹)                 ║
+ * ╚══════════════════════════════════════════════════╝
+ *
+ * Simulates a relational database using JavaScript arrays.
+ * All CRUD operations work directly on these arrays.
+ */
+
+/* ─── ID COUNTER ─── */
+const _ids = { room: 10, booking: 100, customer: 200, staff: 300, service: 400 };
+function nextId(entity) { return ++_ids[entity]; }
+
+/* ════════════════════════════════════
+   ROOMS TABLE
+   Fields: id, number, floor, type, pricePerNight, capacity, status, amenities
+════════════════════════════════════ */
+const rooms = [
+  { id: 1,  number: "101", floor: 1, type: "Standard",     pricePerNight: 2500,  capacity: 2, status: "Available",   amenities: ["AC", "TV", "WiFi"] },
+  { id: 2,  number: "102", floor: 1, type: "Standard",     pricePerNight: 2500,  capacity: 2, status: "Occupied",    amenities: ["AC", "TV", "WiFi"] },
+  { id: 3,  number: "201", floor: 2, type: "Deluxe",       pricePerNight: 4500,  capacity: 2, status: "Available",   amenities: ["AC", "TV", "WiFi", "Mini-Bar", "Balcony"] },
+  { id: 4,  number: "202", floor: 2, type: "Deluxe",       pricePerNight: 4500,  capacity: 3, status: "Maintenance", amenities: ["AC", "TV", "WiFi", "Mini-Bar"] },
+  { id: 5,  number: "301", floor: 3, type: "Suite",        pricePerNight: 8500,  capacity: 4, status: "Available",   amenities: ["AC", "TV", "WiFi", "Jacuzzi", "Mini-Bar", "Balcony", "Kitchen"] },
+  { id: 6,  number: "302", floor: 3, type: "Suite",        pricePerNight: 8500,  capacity: 4, status: "Occupied",    amenities: ["AC", "TV", "WiFi", "Jacuzzi", "Mini-Bar"] },
+  { id: 7,  number: "401", floor: 4, type: "Presidential", pricePerNight: 18000, capacity: 6, status: "Available",   amenities: ["AC", "TV", "WiFi", "Jacuzzi", "Pool", "Butler", "Private Dining", "Gym"] },
+  { id: 8,  number: "203", floor: 2, type: "Deluxe",       pricePerNight: 4800,  capacity: 2, status: "Available",   amenities: ["AC", "TV", "WiFi", "Sea View"] },
+  { id: 9,  number: "103", floor: 1, type: "Standard",     pricePerNight: 2200,  capacity: 1, status: "Available",   amenities: ["AC", "TV"] },
+  { id: 10, number: "303", floor: 3, type: "Suite",        pricePerNight: 9200,  capacity: 4, status: "Occupied",    amenities: ["AC", "TV", "WiFi", "Jacuzzi", "Terrace"] },
+];
+
+/* ════════════════════════════════════
+   CUSTOMERS TABLE
+   Fields: id, name, phone, email, idType, idNumber, city, totalStays
+════════════════════════════════════ */
+const customers = [
+  { id: 1, name: "Aarav Sharma",    phone: "9812345670", email: "aarav@email.com",   idType: "Aadhaar",  idNumber: "1234-5678-9012", city: "Mumbai",    totalStays: 3 },
+  { id: 2, name: "Neha Patel",      phone: "9823456781", email: "neha@email.com",    idType: "PAN",      idNumber: "ABCDE1234F",     city: "Ahmedabad", totalStays: 1 },
+  { id: 3, name: "Rohan Mehta",     phone: "9834567892", email: "rohan@email.com",   idType: "Passport", idNumber: "P1234567",       city: "Delhi",     totalStays: 5 },
+  { id: 4, name: "Priya Iyer",      phone: "9845678903", email: "priya@email.com",   idType: "Aadhaar",  idNumber: "2345-6789-0123", city: "Chennai",   totalStays: 2 },
+  { id: 5, name: "Vikram Singh",    phone: "9856789014", email: "vikram@email.com",  idType: "Voter ID", idNumber: "VH/21/0123456",  city: "Jaipur",    totalStays: 4 },
+  { id: 6, name: "Ananya Reddy",    phone: "9867890125", email: "ananya@email.com",  idType: "Aadhaar",  idNumber: "3456-7890-1234", city: "Hyderabad", totalStays: 1 },
+  { id: 7, name: "Kabir Joshi",     phone: "9878901236", email: "kabir@email.com",   idType: "PAN",      idNumber: "FGHIJ5678K",     city: "Pune",      totalStays: 2 },
+  { id: 8, name: "Meera Nair",      phone: "9889012347", email: "meera@email.com",   idType: "Passport", idNumber: "P7654321",       city: "Kochi",     totalStays: 3 },
+];
+
+/* ════════════════════════════════════
+   BOOKINGS TABLE
+   Fields: id, customerId, roomId, checkIn, checkOut, status, notes, servicesUsed, createdAt
+   Status lifecycle: Confirmed → Checked-In → Checked-Out | Cancelled
+════════════════════════════════════ */
+const today = new Date();
+const fmt = d => d.toISOString().split("T")[0];
+const dPlus = n => { const d = new Date(today); d.setDate(d.getDate()+n); return fmt(d); };
+const dMinus = n => { const d = new Date(today); d.setDate(d.getDate()-n); return fmt(d); };
+
+const bookings = [
+  { id: 101, customerId: 1, roomId: 2,  checkIn: dMinus(2), checkOut: dPlus(1),  status: "Checked-In",  notes: "Early breakfast required",  servicesUsed: [401, 403], createdAt: dMinus(5) },
+  { id: 102, customerId: 3, roomId: 6,  checkIn: dMinus(1), checkOut: dPlus(3),  status: "Checked-In",  notes: "Honeymoon — flowers please", servicesUsed: [402, 403], createdAt: dMinus(4) },
+  { id: 103, customerId: 5, roomId: 10, checkIn: dMinus(3), checkOut: dPlus(0),  status: "Checked-In",  notes: "",                           servicesUsed: [401],      createdAt: dMinus(6) },
+  { id: 104, customerId: 2, roomId: 3,  checkIn: dPlus(1),  checkOut: dPlus(4),  status: "Confirmed",   notes: "Need extra pillows",          servicesUsed: [],         createdAt: dMinus(1) },
+  { id: 105, customerId: 4, roomId: 5,  checkIn: dPlus(2),  checkOut: dPlus(7),  status: "Confirmed",   notes: "Vegetarian meals only",       servicesUsed: [],         createdAt: dMinus(1) },
+  { id: 106, customerId: 6, roomId: 1,  checkIn: dPlus(0),  checkOut: dPlus(2),  status: "Confirmed",   notes: "",                           servicesUsed: [],         createdAt: dMinus(0) },
+  { id: 107, customerId: 7, roomId: 8,  checkIn: dMinus(7), checkOut: dMinus(4), status: "Checked-Out", notes: "",                           servicesUsed: [401, 404], createdAt: dMinus(10) },
+  { id: 108, customerId: 8, roomId: 9,  checkIn: dMinus(5), checkOut: dMinus(3), status: "Cancelled",   notes: "Cancelled due to emergency",  servicesUsed: [],         createdAt: dMinus(8) },
+];
+
+/* ════════════════════════════════════
+   STAFF TABLE
+   Fields: id, name, role, phone, salary, shift, joinDate, status
+════════════════════════════════════ */
+const staff = [
+  { id: 301, name: "Sunita Rao",      role: "Manager",       phone: "9712345671", salary: 55000, shift: "Morning", joinDate: "2020-03-15", status: "Active" },
+  { id: 302, name: "Deepak Chauhan",  role: "Receptionist",  phone: "9723456782", salary: 22000, shift: "Morning", joinDate: "2021-07-10", status: "Active" },
+  { id: 303, name: "Lalitha Menon",   role: "Receptionist",  phone: "9734567893", salary: 22000, shift: "Evening", joinDate: "2022-01-05", status: "Active" },
+  { id: 304, name: "Rajesh Kumar",    role: "Chef",          phone: "9745678904", salary: 38000, shift: "Morning", joinDate: "2019-11-20", status: "Active" },
+  { id: 305, name: "Geeta Deshpande", role: "Housekeeping",  phone: "9756789015", salary: 18000, shift: "Morning", joinDate: "2023-02-14", status: "Active" },
+  { id: 306, name: "Arvind Pillai",   role: "Security",      phone: "9767890126", salary: 20000, shift: "Night",   joinDate: "2022-09-01", status: "Active" },
+  { id: 307, name: "Pooja Shukla",    role: "Concierge",     phone: "9778901237", salary: 25000, shift: "Evening", joinDate: "2021-04-22", status: "Active" },
+  { id: 308, name: "Harish Bose",     role: "Maintenance",   phone: "9789012348", salary: 21000, shift: "Morning", joinDate: "2023-06-30", status: "Active" },
+];
+
+/* ════════════════════════════════════
+   SERVICES TABLE
+   Fields: id, name, category, price, available, description
+════════════════════════════════════ */
+const services = [
+  { id: 401, name: "Room Service",      category: "Food & Beverage", price: 350,  available: true,  description: "In-room dining with full menu" },
+  { id: 402, name: "Spa Treatment",     category: "Spa & Wellness",  price: 1800, available: true,  description: "60-minute full body massage" },
+  { id: 403, name: "Airport Pickup",    category: "Transport",       price: 900,  available: true,  description: "AC vehicle pickup from airport" },
+  { id: 404, name: "Laundry Service",   category: "Laundry",         price: 400,  available: true,  description: "Per bag wash and fold" },
+  { id: 405, name: "Swimming Pool",     category: "Entertainment",   price: 200,  available: true,  description: "Day pass to rooftop pool" },
+  { id: 406, name: "Yoga Session",      category: "Spa & Wellness",  price: 600,  available: true,  description: "Morning yoga with instructor" },
+  { id: 407, name: "Doctor on Call",    category: "Miscellaneous",   price: 1200, available: true,  description: "In-room doctor visit" },
+  { id: 408, name: "Mini Bar Refill",   category: "Food & Beverage", price: 550,  available: false, description: "Refill mini bar stock" },
+];
+
+/* ════════════════════════════════════
+   BILLING RECORDS
+   Stores finalized invoices
+════════════════════════════════════ */
+const bills = [];
+
+</script>
+<script>
+/**
+ * ╔══════════════════════════════════════════════════╗
+ * ║   helpers.js — Utility Functions                 ║
+ * ║   Date validation · Formatting · Billing calc    ║
+ * ╚══════════════════════════════════════════════════╝
+ */
+
+/* ─── DATE UTILITIES ─── */
+
+/** Returns today's date string as YYYY-MM-DD */
+function todayStr() {
+  return new Date().toISOString().split("T")[0];
+}
+
+/** Format a date string to DD MMM YYYY (e.g. 23 Apr 2025) */
+function formatDate(dateStr) {
+  if (!dateStr) return "—";
+  const d = new Date(dateStr);
+  return d.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
+}
+
+/** Calculate number of nights between two date strings */
+function calcNights(checkIn, checkOut) {
+  const d1 = new Date(checkIn);
+  const d2 = new Date(checkOut);
+  const diff = Math.ceil((d2 - d1) / (1000 * 60 * 60 * 24));
+  return diff > 0 ? diff : 0;
+}
+
+/** Validate that checkOut > checkIn */
+function validateDates(checkIn, checkOut) {
+  if (!checkIn || !checkOut) return { valid: false, msg: "Both dates are required." };
+  if (new Date(checkOut) <= new Date(checkIn)) {
+    return { valid: false, msg: "Check-out must be after check-in." };
+  }
+  return { valid: true };
+}
+
+/* ─── CURRENCY FORMATTING ─── */
+
+/** Format number as Indian Rupee string e.g. ₹1,23,456.00 */
+function formatINR(amount) {
+  return "₹" + Number(amount).toLocaleString("en-IN", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
+}
+
+/** Format compact number e.g. ₹1.2L */
+function formatINRCompact(amount) {
+  if (amount >= 100000) return "₹" + (amount / 100000).toFixed(1) + "L";
+  if (amount >= 1000) return "₹" + (amount / 1000).toFixed(1) + "K";
+  return "₹" + amount;
+}
+
+/* ─── BILLING CALCULATION ─── */
+
+/**
+ * calculateBill — Core billing engine
+ * @param {Object} booking  — booking record
+ * @param {Array}  serviceIds — array of service IDs added to bill
+ * @returns {Object} breakdown: { nights, roomCharge, servicesCharge, subtotal, tax, total }
+ */
+function calculateBill(booking, serviceIds = []) {
+  const room = rooms.find(r => r.id === booking.roomId);
+  const nights = calcNights(booking.checkIn, booking.checkOut);
+
+  const roomCharge = (room ? room.pricePerNight : 0) * nights;
+
+  const allServiceIds = [...new Set([...booking.servicesUsed, ...serviceIds])];
+  const usedServices = allServiceIds.map(sid => services.find(s => s.id === sid)).filter(Boolean);
+  const servicesCharge = usedServices.reduce((sum, s) => sum + s.price, 0);
+
+  const subtotal = roomCharge + servicesCharge;
+  const taxRate = 0.10; // 10% GST
+  const tax = parseFloat((subtotal * taxRate).toFixed(2));
+  const total = parseFloat((subtotal + tax).toFixed(2));
+
+  return {
+    nights,
+    roomCharge,
+    usedServices,
+    servicesCharge,
+    subtotal,
+    taxRate,
+    tax,
+    total
+  };
+}
+
+/* ─── STATUS BADGE HELPER ─── */
+
+/** Return an HTML badge span for a given status string */
+function statusBadge(status) {
+  const map = {
+    "Available":   "badge-green",
+    "Occupied":    "badge-orange",
+    "Maintenance": "badge-red",
+    "Confirmed":   "badge-blue",
+    "Checked-In":  "badge-orange",
+    "Checked-Out": "badge-gray",
+    "Cancelled":   "badge-red",
+    "Active":      "badge-green",
+    "Inactive":    "badge-gray",
+  };
+  const cls = map[status] || "badge-gray";
+  return `<span class="badge ${cls}">${status}</span>`;
+}
+
+/* ─── STRING UTILITIES ─── */
+
+/** Capitalize first letter of each word */
+function titleCase(str) {
+  return str.replace(/\b\w/g, c => c.toUpperCase());
+}
+
+/** Truncate string at n chars */
+function truncate(str, n = 30) {
+  return str && str.length > n ? str.slice(0, n) + "…" : str;
+}
+
+/** Generate a random avatar color based on name */
+function avatarColor(name) {
+  const colors = ["#c0392b","#8e44ad","#2980b9","#27ae60","#e67e22","#16a085","#d35400","#7f8c8d"];
+  let hash = 0;
+  for (let c of name) hash = c.charCodeAt(0) + (hash << 5) - hash;
+  return colors[Math.abs(hash) % colors.length];
+}
+
+/** Get initials from a full name */
+function initials(name) {
+  return name.split(" ").map(w => w[0]).join("").toUpperCase().slice(0, 2);
+}
+
+/* ─── TOAST NOTIFICATION ─── */
+
+/** Show a temporary toast message */
+function showToast(message, type = "success") {
+  const t = document.getElementById("toast");
+  t.textContent = message;
+  t.className = "toast show " + (type === "error" ? "toast-error" : "toast-success");
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove("show"), 3000);
+}
+
+/* ─── CONFIRM DIALOG ─── */
+
+/** Simple confirm wrapper */
+function confirmAction(msg) {
+  return window.confirm(msg);
+}
+
+</script>
+<script>
+/**
+ * ╔══════════════════════════════════════════════════╗
+ * ║   app.js — Application Logic & Event Handling   ║
+ * ║   Taj Residency Hotel Management System          ║
+ * ╚══════════════════════════════════════════════════╝
+ *
+ * Modules:
+ *   1. Navigation
+ *   2. Dashboard
+ *   3. Rooms
+ *   4. Bookings
+ *   5. Check-In / Check-Out
+ *   6. Billing
+ *   7. Customers
+ *   8. Staff
+ *   9. Services
+ *  10. Modal Manager
+ */
+
+/* ══════════════════════════════════════
+   1. NAVIGATION
+══════════════════════════════════════ */
+
+const sectionMeta = {
+  dashboard: { title: "Dashboard",      sub: "Overview & real-time statistics" },
+  rooms:     { title: "Room Management",sub: "Add, view and manage hotel rooms" },
+  bookings:  { title: "Bookings",       sub: "Manage booking lifecycle" },
+  checkin:   { title: "Check-In / Out", sub: "Process guest arrivals and departures" },
+  billing:   { title: "Billing",        sub: "Generate invoices with 10% GST" },
+  customers: { title: "Customers",      sub: "Guest records and profiles" },
+  staff:     { title: "Staff",          sub: "Employee management" },
+  services:  { title: "Services",       sub: "Hotel services and pricing" },
+};
+
+function showSection(name) {
+  // Hide all sections
+  document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+  document.querySelectorAll(".nav-item").forEach(b => b.classList.remove("active"));
+
+  // Show target
+  document.getElementById("section-" + name).classList.add("active");
+
+  // Highlight nav
+  const navBtns = document.querySelectorAll(".nav-item");
+  navBtns.forEach(b => {
+    if (b.getAttribute("onclick").includes("'" + name + "'")) b.classList.add("active");
+  });
+
+  // Update topbar
+  const meta = sectionMeta[name];
+  document.getElementById("pageTitle").textContent = meta.title;
+  document.getElementById("pageSub").textContent  = meta.sub;
+
+  // Render section
+  const renders = {
+    dashboard: renderDashboard,
+    rooms:     renderRooms,
+    bookings:  renderBookings,
+    checkin:   renderCheckIn,
+    billing:   renderBillingSection,
+    customers: () => renderCustomers(""),
+    staff:     renderStaff,
+    services:  renderServices,
+  };
+  if (renders[name]) renders[name]();
+}
+
+/* ══════════════════════════════════════
+   2. DASHBOARD
+══════════════════════════════════════ */
+
+function renderDashboard() {
+  const totalRooms     = rooms.length;
+  const availableRooms = rooms.filter(r => r.status === "Available").length;
+  const occupiedRooms  = rooms.filter(r => r.status === "Occupied").length;
+  const activeBookings = bookings.filter(b => b.status === "Checked-In").length;
+  const totalCustomers = customers.length;
+  const totalStaff     = staff.length;
+
+  // Revenue from checked-out bookings
+  const revenue = bookings
+    .filter(b => b.status === "Checked-Out")
+    .reduce((sum, b) => sum + calculateBill(b).total, 0);
+
+  const statsData = [
+    { label: "Total Rooms",      value: totalRooms,                  icon: "⬚", color: "stat-blue"   },
+    { label: "Available Rooms",  value: availableRooms,              icon: "◎", color: "stat-green"  },
+    { label: "Guests Checked-In",value: activeBookings,              icon: "◈", color: "stat-orange" },
+    { label: "Total Customers",  value: totalCustomers,              icon: "◐", color: "stat-purple" },
+    { label: "Staff Members",    value: totalStaff,                  icon: "◑", color: "stat-teal"   },
+    { label: "Revenue (Past)",   value: formatINRCompact(revenue),   icon: "◉", color: "stat-gold"   },
+  ];
+
+  document.getElementById("statsGrid").innerHTML = statsData.map(s => `
+    <div class="stat-card ${s.color}">
+      <div class="stat-icon">${s.icon}</div>
+      <div class="stat-info">
+        <div class="stat-value">${s.value}</div>
+        <div class="stat-label">${s.label}</div>
+      </div>
+    </div>
+  `).join("");
+
+  // Occupancy bars by type
+  const types = ["Standard", "Deluxe", "Suite", "Presidential"];
+  document.getElementById("occupancyBars").innerHTML = types.map(type => {
+    const typeRooms = rooms.filter(r => r.type === type);
+    const occ = typeRooms.filter(r => r.status === "Occupied").length;
+    const pct = typeRooms.length ? Math.round((occ / typeRooms.length) * 100) : 0;
+    return `
+      <div class="occ-row">
+        <span class="occ-label">${type}</span>
+        <div class="occ-bar-wrap">
+          <div class="occ-bar" style="width:${pct}%"></div>
+        </div>
+        <span class="occ-pct">${occ}/${typeRooms.length}</span>
+      </div>
+    `;
+  }).join("");
+
+  // Recent bookings
+  const recent = [...bookings].sort((a, b) => b.id - a.id).slice(0, 5);
+  document.getElementById("recentBookings").innerHTML = `
+    <table class="data-table">
+      <thead><tr><th>ID</th><th>Guest</th><th>Room</th><th>Status</th></tr></thead>
+      <tbody>${recent.map(b => {
+        const cust = customers.find(c => c.id === b.customerId);
+        const room = rooms.find(r => r.id === b.roomId);
+        return `<tr>
+          <td>#${b.id}</td>
+          <td>${cust ? cust.name : "—"}</td>
+          <td>${room ? room.number : "—"}</td>
+          <td>${statusBadge(b.status)}</td>
+        </tr>`;
+      }).join("")}</tbody>
+    </table>
+  `;
+}
+
+/* ══════════════════════════════════════
+   3. ROOMS
+══════════════════════════════════════ */
+
+function renderRooms() {
+  const statusF = document.getElementById("roomStatusFilter").value;
+  const typeF   = document.getElementById("roomTypeFilter").value;
+
+  const filtered = rooms.filter(r =>
+    (!statusF || r.status === statusF) &&
+    (!typeF   || r.type === typeF)
+  );
+
+  document.getElementById("roomsGrid").innerHTML = filtered.length ? filtered.map(r => `
+    <div class="room-card room-${r.status.toLowerCase().replace("-","").replace(" ","")}">
+      <div class="room-card-top">
+        <div class="room-number">Room ${r.number}</div>
+        ${statusBadge(r.status)}
+      </div>
+      <div class="room-type">${r.type}</div>
+      <div class="room-info-row">
+        <span>Floor ${r.floor}</span>
+        <span>👥 ${r.capacity}</span>
+        <span class="room-price">${formatINR(r.pricePerNight)}<small>/night</small></span>
+      </div>
+      <div class="room-amenities">${r.amenities.map(a => `<span class="amenity-chip">${a}</span>`).join("")}</div>
+      <div class="room-actions">
+        <button class="btn-sm btn-outline" onclick="editRoom(${r.id})">Edit</button>
+        <button class="btn-sm btn-outline btn-danger-outline" onclick="deleteRoom(${r.id})">Remove</button>
+      </div>
+    </div>
+  `).join("") : `<div class="empty-state">No rooms match the selected filters.</div>`;
+}
+
+function editRoom(id) {
+  const r = rooms.find(r => r.id === id);
+  if (!r) return;
+  document.getElementById("roomModalTitle").textContent = "Edit Room";
+  document.getElementById("roomEditId").value      = r.id;
+  document.getElementById("roomNumber").value      = r.number;
+  document.getElementById("roomFloor").value       = r.floor;
+  document.getElementById("roomType").value        = r.type;
+  document.getElementById("roomPrice").value       = r.pricePerNight;
+  document.getElementById("roomCapacity").value    = r.capacity;
+  document.getElementById("roomStatus").value      = r.status;
+  document.getElementById("roomAmenities").value   = r.amenities.join(", ");
+  openModal("roomModal");
+}
+
+function saveRoom() {
+  const number    = document.getElementById("roomNumber").value.trim();
+  const floor     = parseInt(document.getElementById("roomFloor").value) || 1;
+  const type      = document.getElementById("roomType").value;
+  const price     = parseFloat(document.getElementById("roomPrice").value);
+  const capacity  = parseInt(document.getElementById("roomCapacity").value) || 2;
+  const status    = document.getElementById("roomStatus").value;
+  const amenities = document.getElementById("roomAmenities").value.split(",").map(a => a.trim()).filter(Boolean);
+  const editId    = parseInt(document.getElementById("roomEditId").value);
+
+  if (!number) return showToast("Room number is required.", "error");
+  if (!price || price <= 0) return showToast("Enter a valid price.", "error");
+
+  // Check duplicate room number (excluding self)
+  if (rooms.some(r => r.number === number && r.id !== editId)) {
+    return showToast("Room number already exists.", "error");
+  }
+
+  if (editId) {
+    const r = rooms.find(r => r.id === editId);
+    Object.assign(r, { number, floor, type, pricePerNight: price, capacity, status, amenities });
+    showToast("Room updated successfully.");
+  } else {
+    rooms.push({ id: nextId("room"), number, floor, type, pricePerNight: price, capacity, status, amenities });
+    showToast("Room added successfully.");
+  }
+
+  closeModal("roomModal");
+  renderRooms();
+}
+
+function deleteRoom(id) {
+  // Check if room has active bookings
+  const hasActive = bookings.some(b => b.roomId === id && ["Confirmed","Checked-In"].includes(b.status));
+  if (hasActive) return showToast("Cannot remove room with active bookings.", "error");
+  if (!confirmAction("Remove this room permanently?")) return;
+  const idx = rooms.findIndex(r => r.id === id);
+  if (idx > -1) rooms.splice(idx, 1);
+  showToast("Room removed.");
+  renderRooms();
+}
+
+/* ══════════════════════════════════════
+   4. BOOKINGS
+══════════════════════════════════════ */
+
+function renderBookings() {
+  const statusF = document.getElementById("bookingStatusFilter").value;
+  const filtered = bookings.filter(b => !statusF || b.status === statusF);
+
+  document.getElementById("bookingsTbody").innerHTML = filtered.length ? filtered.map(b => {
+    const cust = customers.find(c => c.id === b.customerId);
+    const room = rooms.find(r => r.id === b.roomId);
+    const bill = calculateBill(b);
+    return `
+      <tr>
+        <td><strong>#${b.id}</strong></td>
+        <td>${cust ? cust.name : "Unknown"}</td>
+        <td>${room ? `${room.number} (${room.type})` : "—"}</td>
+        <td>${formatDate(b.checkIn)}</td>
+        <td>${formatDate(b.checkOut)}</td>
+        <td>${statusBadge(b.status)}</td>
+        <td>${formatINR(bill.total)}</td>
+        <td class="action-cell">
+          ${b.status === "Confirmed" ? `<button class="btn-sm" onclick="cancelBooking(${b.id})">Cancel</button>` : ""}
+          <button class="btn-sm btn-outline" onclick="viewBookingDetails(${b.id})">View</button>
+        </td>
+      </tr>
+    `;
+  }).join("") : `<tr><td colspan="8" class="empty-td">No bookings found.</td></tr>`;
+}
+
+function populateBookingModal() {
+  const custSel = document.getElementById("bookingCustomer");
+  custSel.innerHTML = customers.map(c => `<option value="${c.id}">${c.name}</option>`).join("");
+
+  const availRooms = rooms.filter(r => r.status === "Available");
+  const roomSel = document.getElementById("bookingRoom");
+  roomSel.innerHTML = availRooms.map(r =>
+    `<option value="${r.id}">Room ${r.number} — ${r.type} (${formatINR(r.pricePerNight)}/night)</option>`
+  ).join("");
+
+  // Default dates
+  document.getElementById("bookingCheckIn").value  = todayStr();
+  const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
+  document.getElementById("bookingCheckOut").value = tomorrow.toISOString().split("T")[0];
+
+  // Live cost preview
+  ["bookingCheckIn","bookingCheckOut","bookingRoom"].forEach(id => {
+    document.getElementById(id).addEventListener("change", updateBookingCostPreview);
+  });
+  updateBookingCostPreview();
+}
+
+function updateBookingCostPreview() {
+  const roomId   = parseInt(document.getElementById("bookingRoom").value);
+  const checkIn  = document.getElementById("bookingCheckIn").value;
+  const checkOut = document.getElementById("bookingCheckOut").value;
+  const room     = rooms.find(r => r.id === roomId);
+  if (!room || !checkIn || !checkOut) return;
+
+  const nights = calcNights(checkIn, checkOut);
+  if (nights <= 0) {
+    document.getElementById("bookingCostPreview").innerHTML = `<span class="cost-warning">⚠ Check-out must be after check-in</span>`;
+    return;
+  }
+  const subtotal = room.pricePerNight * nights;
+  const tax = subtotal * 0.10;
+  document.getElementById("bookingCostPreview").innerHTML = `
+    <div class="cost-preview-box">
+      <div class="cp-row"><span>${nights} night${nights>1?"s":""} × ${formatINR(room.pricePerNight)}</span><span>${formatINR(subtotal)}</span></div>
+      <div class="cp-row"><span>GST (10%)</span><span>${formatINR(tax)}</span></div>
+      <div class="cp-row cp-total"><span>Estimated Total</span><span>${formatINR(subtotal + tax)}</span></div>
+    </div>
+  `;
+}
+
+function saveBooking() {
+  const customerId = parseInt(document.getElementById("bookingCustomer").value);
+  const roomId     = parseInt(document.getElementById("bookingRoom").value);
+  const checkIn    = document.getElementById("bookingCheckIn").value;
+  const checkOut   = document.getElementById("bookingCheckOut").value;
+  const notes      = document.getElementById("bookingNotes").value.trim();
+
+  const dateCheck = validateDates(checkIn, checkOut);
+  if (!dateCheck.valid) return showToast(dateCheck.msg, "error");
+  if (!customerId) return showToast("Please select a customer.", "error");
+  if (!roomId)     return showToast("Please select a room.", "error");
+
+  // Mark room as Occupied
+  const room = rooms.find(r => r.id === roomId);
+  if (room) room.status = "Occupied";
+
+  const newBooking = {
+    id: nextId("booking"),
+    customerId, roomId, checkIn, checkOut,
+    status: "Confirmed",
+    notes,
+    servicesUsed: [],
+    createdAt: todayStr()
+  };
+  bookings.push(newBooking);
+
+  // Increment customer stay count
+  const cust = customers.find(c => c.id === customerId);
+  if (cust) cust.totalStays++;
+
+  showToast(`Booking #${newBooking.id} confirmed!`);
+  closeModal("bookingModal");
+  renderBookings();
+}
+
+function cancelBooking(id) {
+  if (!confirmAction("Cancel this booking?")) return;
+  const b = bookings.find(b => b.id === id);
+  if (!b || b.status !== "Confirmed") return showToast("Only confirmed bookings can be cancelled.", "error");
+  b.status = "Cancelled";
+  // Free room
+  const room = rooms.find(r => r.id === b.roomId);
+  if (room) room.status = "Available";
+  showToast("Booking cancelled.");
+  renderBookings();
+}
+
+function viewBookingDetails(id) {
+  const b    = bookings.find(b => b.id === id);
+  const cust = customers.find(c => c.id === b.customerId);
+  const room = rooms.find(r => r.id === b.roomId);
+  const bill = calculateBill(b);
+
+  alert(`
+Booking #${b.id} — ${b.status}
+──────────────────────────────
+Guest  : ${cust ? cust.name : "Unknown"} (${cust ? cust.phone : ""})
+Room   : ${room ? room.number + " (" + room.type + ")" : "—"}
+Check-In  : ${formatDate(b.checkIn)}
+Check-Out : ${formatDate(b.checkOut)}
+Nights : ${bill.nights}
+──────────────────────────────
+Room Charge : ${formatINR(bill.roomCharge)}
+Services    : ${formatINR(bill.servicesCharge)}
+GST (10%)   : ${formatINR(bill.tax)}
+TOTAL       : ${formatINR(bill.total)}
+──────────────────────────────
+Notes: ${b.notes || "None"}
+  `.trim());
+}
+
+/* ══════════════════════════════════════
+   5. CHECK-IN / CHECK-OUT
+══════════════════════════════════════ */
+
+function renderCheckIn() {
+  // Populate check-in select (Confirmed bookings)
+  const confirmed = bookings.filter(b => b.status === "Confirmed");
+  const ciSel = document.getElementById("checkinBookingSelect");
+  ciSel.innerHTML = `<option value="">— Choose Booking —</option>` +
+    confirmed.map(b => {
+      const c = customers.find(c => c.id === b.customerId);
+      const r = rooms.find(r => r.id === b.roomId);
+      return `<option value="${b.id}">#${b.id} — ${c ? c.name : "?"} | Room ${r ? r.number : "?"}</option>`;
+    }).join("");
+  ciSel.onchange = () => showCheckinPreview(parseInt(ciSel.value));
+  document.getElementById("checkinPreview").innerHTML = "";
+
+  // Populate check-out select (Checked-In bookings)
+  const checkedIn = bookings.filter(b => b.status === "Checked-In");
+  const coSel = document.getElementById("checkoutBookingSelect");
+  coSel.innerHTML = `<option value="">— Choose Booking —</option>` +
+    checkedIn.map(b => {
+      const c = customers.find(c => c.id === b.customerId);
+      const r = rooms.find(r => r.id === b.roomId);
+      return `<option value="${b.id}">#${b.id} — ${c ? c.name : "?"} | Room ${r ? r.number : "?"}</option>`;
+    }).join("");
+  coSel.onchange = () => showCheckoutPreview(parseInt(coSel.value));
+  document.getElementById("checkoutPreview").innerHTML = "";
+
+  // Currently Checked-In list
+  document.getElementById("checkedInList").innerHTML = checkedIn.length ? checkedIn.map(b => {
+    const c = customers.find(cu => cu.id === b.customerId);
+    const r = rooms.find(ro => ro.id === b.roomId);
+    const nights = calcNights(b.checkIn, todayStr());
+    return `<tr>
+      <td>#${b.id}</td>
+      <td>${c ? c.name : "—"}</td>
+      <td>${r ? r.number : "—"}</td>
+      <td>${formatDate(b.checkIn)}</td>
+      <td>${nights} night${nights !== 1 ? "s" : ""}</td>
+    </tr>`;
+  }).join("") : `<tr><td colspan="5" class="empty-td">No guests currently checked-in.</td></tr>`;
+}
+
+function showCheckinPreview(id) {
+  if (!id) { document.getElementById("checkinPreview").innerHTML = ""; return; }
+  const b = bookings.find(b => b.id === id);
+  const c = customers.find(c => c.id === b.customerId);
+  const r = rooms.find(r => r.id === b.roomId);
+  document.getElementById("checkinPreview").innerHTML = `
+    <div class="preview-box">
+      <div class="preview-row"><span>Guest</span><strong>${c ? c.name : "?"}</strong></div>
+      <div class="preview-row"><span>Room</span><strong>${r ? r.number + " — " + r.type : "?"}</strong></div>
+      <div class="preview-row"><span>Check-In</span><strong>${formatDate(b.checkIn)}</strong></div>
+      <div class="preview-row"><span>Check-Out</span><strong>${formatDate(b.checkOut)}</strong></div>
+      <div class="preview-row"><span>Nights</span><strong>${calcNights(b.checkIn, b.checkOut)}</strong></div>
+    </div>
+  `;
+}
+
+function showCheckoutPreview(id) {
+  if (!id) { document.getElementById("checkoutPreview").innerHTML = ""; return; }
+  const b = bookings.find(b => b.id === id);
+  const c = customers.find(c => c.id === b.customerId);
+  const r = rooms.find(r => r.id === b.roomId);
+  const bill = calculateBill(b);
+  document.getElementById("checkoutPreview").innerHTML = `
+    <div class="preview-box">
+      <div class="preview-row"><span>Guest</span><strong>${c ? c.name : "?"}</strong></div>
+      <div class="preview-row"><span>Room</span><strong>${r ? r.number : "?"}</strong></div>
+      <div class="preview-row"><span>Nights</span><strong>${bill.nights}</strong></div>
+      <div class="preview-row"><span>Room Charges</span><strong>${formatINR(bill.roomCharge)}</strong></div>
+      <div class="preview-row"><span>Services</span><strong>${formatINR(bill.servicesCharge)}</strong></div>
+      <div class="preview-row"><span>GST (10%)</span><strong>${formatINR(bill.tax)}</strong></div>
+      <div class="preview-row total-row"><span>TOTAL</span><strong>${formatINR(bill.total)}</strong></div>
+    </div>
+  `;
+}
+
+function doCheckIn() {
+  const id = parseInt(document.getElementById("checkinBookingSelect").value);
+  if (!id) return showToast("Please select a booking.", "error");
+  const b = bookings.find(b => b.id === id);
+  if (!b) return;
+  b.status = "Checked-In";
+  const room = rooms.find(r => r.id === b.roomId);
+  if (room) room.status = "Occupied";
+  showToast(`Guest checked-in for Booking #${id}!`);
+  renderCheckIn();
+}
+
+function doCheckOut() {
+  const id = parseInt(document.getElementById("checkoutBookingSelect").value);
+  if (!id) return showToast("Please select a booking.", "error");
+  const b = bookings.find(b => b.id === id);
+  if (!b) return;
+  b.status = "Checked-Out";
+  const room = rooms.find(r => r.id === b.roomId);
+  if (room) room.status = "Available";
+  showToast(`Guest checked-out. Room ${room ? room.number : ""} is now available.`);
+  renderCheckIn();
+}
+
+/* ══════════════════════════════════════
+   6. BILLING
+══════════════════════════════════════ */
+
+let billExtraServices = [];
+
+function renderBillingSection() {
+  billExtraServices = [];
+
+  // Populate booking select (all non-cancelled)
+  const billSel = document.getElementById("billingBookingSelect");
+  billSel.innerHTML = `<option value="">— Choose Booking —</option>` +
+    bookings.filter(b => b.status !== "Cancelled").map(b => {
+      const c = customers.find(c => c.id === b.customerId);
+      return `<option value="${b.id}">#${b.id} — ${c ? c.name : "?"} (${b.status})</option>`;
+    }).join("");
+
+  // Populate services select
+  const svcSel = document.getElementById("billingServiceSelect");
+  svcSel.innerHTML = `<option value="">— Select Service —</option>` +
+    services.filter(s => s.available).map(s =>
+      `<option value="${s.id}">${s.name} — ${formatINR(s.price)}</option>`
+    ).join("");
+
+  document.getElementById("billingServicesList").innerHTML = "";
+  document.getElementById("billPreview").innerHTML = `
+    <div class="bill-placeholder"><div class="bill-icon">◉</div><p>Select a booking to preview invoice</p></div>
+  `;
+}
+
+function addServiceToBill() {
+  const svcId = parseInt(document.getElementById("billingServiceSelect").value);
+  if (!svcId) return showToast("Select a service first.", "error");
+  const svc = services.find(s => s.id === svcId);
+  if (!svc) return;
+  if (billExtraServices.includes(svcId)) return showToast("Service already added.", "error");
+  billExtraServices.push(svcId);
+
+  const list = document.getElementById("billingServicesList");
+  const div = document.createElement("div");
+  div.className = "bill-svc-chip";
+  div.innerHTML = `<span>${svc.name}</span><span>${formatINR(svc.price)}</span>
+    <button onclick="removeBillService(${svcId}, this)">✕</button>`;
+  list.appendChild(div);
+
+  loadBillingPreview();
+}
+
+function removeBillService(id, btn) {
+  billExtraServices = billExtraServices.filter(s => s !== id);
+  btn.parentElement.remove();
+  loadBillingPreview();
+}
+
+function loadBillingPreview() {
+  const id = parseInt(document.getElementById("billingBookingSelect").value);
+  if (!id) return;
+  const b    = bookings.find(b => b.id === id);
+  const cust = customers.find(c => c.id === b.customerId);
+  const room = rooms.find(r => r.id === b.roomId);
+  const bill = calculateBill(b, billExtraServices);
+
+  document.getElementById("billPreview").innerHTML = `
+    <div class="invoice-preview">
+      <div class="invoice-header">
+        <div class="invoice-logo">⬡ Taj Residency</div>
+        <div class="invoice-meta">
+          <div>Invoice for Booking <strong>#${b.id}</strong></div>
+          <div>Date: ${formatDate(todayStr())}</div>
+          <div>Status: ${statusBadge(b.status)}</div>
+        </div>
+      </div>
+      <div class="invoice-guest">
+        <div><strong>${cust ? cust.name : "—"}</strong></div>
+        <div>${cust ? cust.phone : ""}</div>
+        <div>${cust ? cust.city : ""}</div>
+      </div>
+      <table class="invoice-table">
+        <thead><tr><th>Description</th><th>Amount</th></tr></thead>
+        <tbody>
+          <tr><td>Room ${room ? room.number : "?"} (${room ? room.type : "?"}) × ${bill.nights} night${bill.nights>1?"s":""}</td><td>${formatINR(bill.roomCharge)}</td></tr>
+          ${bill.usedServices.map(s => `<tr><td>${s.name}</td><td>${formatINR(s.price)}</td></tr>`).join("")}
+          <tr class="subtotal-row"><td>Subtotal</td><td>${formatINR(bill.subtotal)}</td></tr>
+          <tr><td>GST (10%)</td><td>${formatINR(bill.tax)}</td></tr>
+          <tr class="total-row"><td><strong>TOTAL</strong></td><td><strong>${formatINR(bill.total)}</strong></td></tr>
+        </tbody>
+      </table>
+      <div class="invoice-footer">Thank you for staying at Taj Residency!</div>
+    </div>
+  `;
+}
+
+function generateBill() {
+  const id = parseInt(document.getElementById("billingBookingSelect").value);
+  if (!id) return showToast("Please select a booking.", "error");
+  const b    = bookings.find(b => b.id === id);
+  const cust = customers.find(c => c.id === b.customerId);
+  const room = rooms.find(r => r.id === b.roomId);
+  const bill = calculateBill(b, billExtraServices);
+
+  // Save bill record
+  bills.push({ bookingId: id, generatedAt: todayStr(), total: bill.total });
+
+  // Merge extra services into booking
+  billExtraServices.forEach(sid => {
+    if (!b.servicesUsed.includes(sid)) b.servicesUsed.push(sid);
+  });
+
+  document.getElementById("billPrintContent").innerHTML = `
+    <div class="invoice-preview print-invoice">
+      <div class="invoice-header">
+        <div class="invoice-logo">⬡ Taj Residency</div>
+        <div class="invoice-meta">
+          <div><strong>GST Invoice</strong> — Booking #${b.id}</div>
+          <div>Date: ${formatDate(todayStr())}</div>
+        </div>
+      </div>
+      <div class="invoice-divider"></div>
+      <div class="invoice-guest">
+        <div><strong>Bill To:</strong> ${cust ? cust.name : "—"}</div>
+        <div>Phone: ${cust ? cust.phone : ""} | City: ${cust ? cust.city : ""}</div>
+        <div>ID: ${cust ? cust.idType + " — " + cust.idNumber : ""}</div>
+      </div>
+      <div class="invoice-period">
+        Check-In: ${formatDate(b.checkIn)} &nbsp;|&nbsp; Check-Out: ${formatDate(b.checkOut)} &nbsp;|&nbsp; ${bill.nights} Night${bill.nights>1?"s":""}
+      </div>
+      <table class="invoice-table">
+        <thead><tr><th>Description</th><th>Qty</th><th>Rate</th><th>Amount</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Room ${room ? room.number : "?"} — ${room ? room.type : "?"}</td>
+            <td>${bill.nights} night${bill.nights>1?"s":""}</td>
+            <td>${formatINR(room ? room.pricePerNight : 0)}</td>
+            <td>${formatINR(bill.roomCharge)}</td>
+          </tr>
+          ${bill.usedServices.map(s => `
+            <tr>
+              <td>${s.name} (${s.category})</td>
+              <td>1</td>
+              <td>${formatINR(s.price)}</td>
+              <td>${formatINR(s.price)}</td>
+            </tr>
+          `).join("")}
+        </tbody>
+        <tfoot>
+          <tr class="subtotal-row"><td colspan="3">Subtotal</td><td>${formatINR(bill.subtotal)}</td></tr>
+          <tr><td colspan="3">GST @ 10%</td><td>${formatINR(bill.tax)}</td></tr>
+          <tr class="total-row"><td colspan="3"><strong>Grand Total (INR)</strong></td><td><strong>${formatINR(bill.total)}</strong></td></tr>
+        </tfoot>
+      </table>
+      <div class="invoice-footer">
+        <p>Thank you for your stay at Taj Residency. We hope to welcome you again!</p>
+        <small>This is a computer-generated invoice. No signature required.</small>
+      </div>
+    </div>
+  `;
+
+  showToast("Invoice generated!");
+  openModal("billPrintModal");
+}
+
+/* ══════════════════════════════════════
+   7. CUSTOMERS
+══════════════════════════════════════ */
+
+function renderCustomers(query = "") {
+  const q = query.toLowerCase();
+  const filtered = customers.filter(c =>
+    c.name.toLowerCase().includes(q) ||
+    c.phone.includes(q) ||
+    c.email.toLowerCase().includes(q) ||
+    c.city.toLowerCase().includes(q)
+  );
+
+  document.getElementById("customersTbody").innerHTML = filtered.length ? filtered.map(c => `
+    <tr>
+      <td><strong>#${c.id}</strong></td>
+      <td>
+        <div class="customer-name-cell">
+          <div class="mini-avatar" style="background:${avatarColor(c.name)}">${initials(c.name)}</div>
+          ${c.name}
+        </div>
+      </td>
+      <td>${c.phone}</td>
+      <td>${c.email || "—"}</td>
+      <td><span class="id-chip">${c.idType}</span> ${c.idNumber}</td>
+      <td>${c.totalStays}</td>
+      <td class="action-cell">
+        <button class="btn-sm btn-outline" onclick="editCustomer(${c.id})">Edit</button>
+        <button class="btn-sm btn-outline btn-danger-outline" onclick="deleteCustomer(${c.id})">Delete</button>
+      </td>
+    </tr>
+  `).join("") : `<tr><td colspan="7" class="empty-td">No customers found.</td></tr>`;
+}
+
+function editCustomer(id) {
+  const c = customers.find(c => c.id === id);
+  if (!c) return;
+  document.getElementById("customerModalTitle").textContent = "Edit Customer";
+  document.getElementById("customerEditId").value    = c.id;
+  document.getElementById("customerName").value      = c.name;
+  document.getElementById("customerPhone").value     = c.phone;
+  document.getElementById("customerEmail").value     = c.email;
+  document.getElementById("customerIdType").value    = c.idType;
+  document.getElementById("customerIdNumber").value  = c.idNumber;
+  document.getElementById("customerCity").value      = c.city;
+  openModal("customerModal");
+}
+
+function saveCustomer() {
+  const name     = document.getElementById("customerName").value.trim();
+  const phone    = document.getElementById("customerPhone").value.trim();
+  const email    = document.getElementById("customerEmail").value.trim();
+  const idType   = document.getElementById("customerIdType").value;
+  const idNumber = document.getElementById("customerIdNumber").value.trim();
+  const city     = document.getElementById("customerCity").value.trim();
+  const editId   = parseInt(document.getElementById("customerEditId").value);
+
+  if (!name)  return showToast("Name is required.", "error");
+  if (!phone) return showToast("Phone is required.", "error");
+
+  if (editId) {
+    const c = customers.find(c => c.id === editId);
+    Object.assign(c, { name, phone, email, idType, idNumber, city });
+    showToast("Customer updated.");
+  } else {
+    customers.push({ id: nextId("customer"), name, phone, email, idType, idNumber, city, totalStays: 0 });
+    showToast("Customer added.");
+  }
+  closeModal("customerModal");
+  renderCustomers("");
+}
+
+function deleteCustomer(id) {
+  const hasBooking = bookings.some(b => b.customerId === id && ["Confirmed","Checked-In"].includes(b.status));
+  if (hasBooking) return showToast("Cannot delete customer with active bookings.", "error");
+  if (!confirmAction("Delete this customer?")) return;
+  const idx = customers.findIndex(c => c.id === id);
+  if (idx > -1) customers.splice(idx, 1);
+  showToast("Customer deleted.");
+  renderCustomers("");
+}
+
+/* ══════════════════════════════════════
+   8. STAFF
+══════════════════════════════════════ */
+
+function renderStaff() {
+  const roleColors = {
+    Manager: "#8e44ad", Receptionist: "#2980b9", Chef: "#e67e22",
+    Security: "#c0392b", Housekeeping: "#27ae60", Maintenance: "#16a085",
+    Concierge: "#d35400"
+  };
+
+  document.getElementById("staffGrid").innerHTML = staff.map(s => `
+    <div class="staff-card">
+      <div class="staff-avatar" style="background:${roleColors[s.role] || "#7f8c8d"}">${initials(s.name)}</div>
+      <div class="staff-name">${s.name}</div>
+      <div class="staff-role">${s.role}</div>
+      <div class="staff-details">
+        <span>📞 ${s.phone}</span>
+        <span>🕐 ${s.shift}</span>
+        <span>💰 ${formatINR(s.salary)}/mo</span>
+        <span>📅 Since ${formatDate(s.joinDate)}</span>
+      </div>
+      ${statusBadge(s.status)}
+      <div class="staff-actions">
+        <button class="btn-sm btn-outline btn-danger-outline" onclick="removeStaff(${s.id})">Remove</button>
+      </div>
+    </div>
+  `).join("");
+}
+
+function saveStaff() {
+  const name      = document.getElementById("staffName").value.trim();
+  const role      = document.getElementById("staffRole").value;
+  const phone     = document.getElementById("staffPhone").value.trim();
+  const salary    = parseFloat(document.getElementById("staffSalary").value) || 0;
+  const shift     = document.getElementById("staffShift").value;
+  const joinDate  = document.getElementById("staffJoinDate").value || todayStr();
+
+  if (!name) return showToast("Staff name is required.", "error");
+
+  staff.push({ id: nextId("staff"), name, role, phone, salary, shift, joinDate, status: "Active" });
+  showToast("Staff member added.");
+  closeModal("staffModal");
+  renderStaff();
+}
+
+function removeStaff(id) {
+  if (!confirmAction("Remove this staff member?")) return;
+  const idx = staff.findIndex(s => s.id === id);
+  if (idx > -1) staff.splice(idx, 1);
+  showToast("Staff member removed.");
+  renderStaff();
+}
+
+/* ══════════════════════════════════════
+   9. SERVICES
+══════════════════════════════════════ */
+
+function renderServices() {
+  document.getElementById("servicesTbody").innerHTML = services.map(s => `
+    <tr>
+      <td><strong>#${s.id}</strong></td>
+      <td>${s.name}</td>
+      <td><span class="category-chip">${s.category}</span></td>
+      <td>${formatINR(s.price)}</td>
+      <td>${s.available ? statusBadge("Available") : statusBadge("Maintenance")}</td>
+      <td class="action-cell">
+        <button class="btn-sm btn-outline" onclick="toggleService(${s.id})">${s.available ? "Disable" : "Enable"}</button>
+        <button class="btn-sm btn-outline btn-danger-outline" onclick="deleteService(${s.id})">Delete</button>
+      </td>
+    </tr>
+  `).join("");
+}
+
+function saveService() {
+  const name      = document.getElementById("serviceName").value.trim();
+  const category  = document.getElementById("serviceCategory").value;
+  const price     = parseFloat(document.getElementById("servicePrice").value);
+  const available = document.getElementById("serviceAvailable").value === "true";
+  const desc      = document.getElementById("serviceDesc").value.trim();
+
+  if (!name)           return showToast("Service name is required.", "error");
+  if (!price || price < 0) return showToast("Enter a valid price.", "error");
+
+  services.push({ id: nextId("service"), name, category, price, available, description: desc });
+  showToast("Service added.");
+  closeModal("serviceModal");
+  renderServices();
+}
+
+function toggleService(id) {
+  const svc = services.find(s => s.id === id);
+  if (svc) svc.available = !svc.available;
+  showToast(`Service ${svc.available ? "enabled" : "disabled"}.`);
+  renderServices();
+}
+
+function deleteService(id) {
+  if (!confirmAction("Delete this service?")) return;
+  const idx = services.findIndex(s => s.id === id);
+  if (idx > -1) services.splice(idx, 1);
+  showToast("Service deleted.");
+  renderServices();
+}
+
+/* ══════════════════════════════════════
+   10. MODAL MANAGER
+══════════════════════════════════════ */
+
+function openModal(id) {
+  // Reset form inputs
+  const modal = document.getElementById(id);
+  modal.querySelectorAll("input, textarea").forEach(el => el.value = "");
+  modal.querySelectorAll("input[type=hidden]").forEach(el => el.value = "");
+
+  // Pre-populate data selects for booking
+  if (id === "bookingModal") populateBookingModal();
+
+  modal.classList.add("active");
+  document.body.style.overflow = "hidden";
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove("active");
+  document.body.style.overflow = "";
+}
+
+// Close on overlay click
+document.querySelectorAll(".modal-overlay").forEach(overlay => {
+  overlay.addEventListener("click", e => {
+    if (e.target === overlay) closeModal(overlay.id);
+  });
+});
+
+// Close on Escape
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") {
+    document.querySelectorAll(".modal-overlay.active").forEach(m => closeModal(m.id));
+  }
+});
+
+/* ══════════════════════════════════════
+   INIT
+══════════════════════════════════════ */
+
+function init() {
+  // Set date in topbar
+  document.getElementById("topbarDate").textContent =
+    new Date().toLocaleDateString("en-IN", { weekday: "short", day: "numeric", month: "long", year: "numeric" });
+
+  // Render dashboard by default
+  renderDashboard();
+}
+
+window.addEventListener("DOMContentLoaded", init);
+
+</script>
+</body>
+</html>
