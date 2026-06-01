@@ -28,6 +28,6 @@ The project was successfully implemented and tested, producing reliable results 
 * Better management of customer and staff records
 * Strong foundation for future industry-level development
 
-In conclusion, the Hotel Management System demonstrates how modern web technologies can be used to automate and optimize hotel operations. The project highlights important concepts of web development, data management, and system design while providing a practical solution for hotel administration. Future enhancements such as database integration, online booking facilities, payment gateway support, cloud deployment, and AI-based recommendations can further transform it into a complete commercial hotel management platform.
+In conclusion, the Hotel Management System demonstrates how modern web technologies can be used to automate and optimize hotel operations. The project highlights important concepts of web development, data management, and system design while providing a practical solution for hotel administration. Future enhancements such as database integration, online booking facilities, payment gateway support, cloud deployment, and AI-based recommendations can further transform it into a complete commercial hotel management platform
 
 
